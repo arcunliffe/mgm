@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomepageActivity">
+
+    <Button
+        android:id="@+id/p_transit"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/plus_button"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p_bike" />
+
+    <Button
+        android:id="@+id/p_bike"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/plus_button"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/p_transit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p_run" />
+
+    <Button
+        android:id="@+id/p_run"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/plus_button"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/p_bike"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p_walk" />
+
+    <Button
+        android:id="@+id/m_transit"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/minus_button"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/p_transit"
+        app:layout_constraintTop_toBottomOf="@+id/m_bike" />
+
+    <Button
+        android:id="@+id/m_bike"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/minus_button"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/m_transit"
+        app:layout_constraintEnd_toStartOf="@+id/p_bike"
+        app:layout_constraintTop_toBottomOf="@+id/m_run" />
+
+    <Button
+        android:id="@+id/m_run"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/minus_button"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/m_bike"
+        app:layout_constraintEnd_toStartOf="@+id/p_run"
+        app:layout_constraintTop_toBottomOf="@+id/m_walk" />
+
+    <Button
+        android:id="@+id/m_walk"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/minus_button"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/m_run"
+        app:layout_constraintEnd_toStartOf="@+id/p_walk"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/p_walk"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/plus_button"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/p_run"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_walk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/image_run"
+        app:layout_constraintEnd_toStartOf="@+id/text_walktrips"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/walk_64" />
+
+    <ImageView
+        android:id="@+id/image_run"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/image_bike"
+        app:layout_constraintEnd_toStartOf="@+id/text_runtrips"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_walk"
+        app:srcCompat="@drawable/run_64" />
+
+    <ImageView
+        android:id="@+id/image_bike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/image_transit"
+        app:layout_constraintEnd_toStartOf="@+id/text_biketrips"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_run"
+        app:srcCompat="@drawable/bike_64" />
+
+    <ImageView
+        android:id="@+id/image_transit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/text_transittrips"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_bike"
+        app:srcCompat="@drawable/transit_64" />
+
+    <TextView
+        android:id="@+id/text_runtrips"
+        android:layout_width="127dp"
+        android:layout_height="46dp"
+        android:text="@string/trips_text"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/text_biketrips"
+        app:layout_constraintEnd_toStartOf="@+id/m_run"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/image_run"
+        app:layout_constraintTop_toBottomOf="@+id/text_walktrips" />
+
+    <TextView
+        android:id="@+id/text_biketrips"
+        android:layout_width="127dp"
+        android:layout_height="46dp"
+        android:text="@string/trips_text"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/text_transittrips"
+        app:layout_constraintEnd_toStartOf="@+id/m_bike"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/image_bike"
+        app:layout_constraintTop_toBottomOf="@+id/text_runtrips" />
+
+    <TextView
+        android:id="@+id/text_walktrips"
+        android:layout_width="127dp"
+        android:layout_height="46dp"
+        android:text="@string/trips_text"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/text_runtrips"
+        app:layout_constraintEnd_toStartOf="@+id/m_walk"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/image_walk"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_transittrips"
+        android:layout_width="127dp"
+        android:layout_height="46dp"
+        android:text="@string/trips_text"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/m_transit"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/image_transit"
+        app:layout_constraintTop_toBottomOf="@+id/text_biketrips" />
+
+</android.support.constraint.ConstraintLayout>
