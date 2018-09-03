@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         //                    { requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS) })
         //} else {
         // TODO: Why the need to access device contacts? Come back to this and make it unnecessary.
-        requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS)
+        // requestPermissions(arrayOf(READ_CONTACTS), REQUEST_READ_CONTACTS)
         //}
         return false
     }

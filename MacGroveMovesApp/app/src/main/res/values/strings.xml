@@ -15,6 +15,6 @@
     </string>
     <string name="skip_message">Skip Step</string>
     <string name="minus_button">-</string>
-    <string name="trips_text">0 trips</string>
+    <string name="trips_text"></string>
     <string name="plus_button">+</string>
 </resources>
