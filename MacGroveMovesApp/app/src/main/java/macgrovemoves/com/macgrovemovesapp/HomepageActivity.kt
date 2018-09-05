@@ -3,7 +3,6 @@ package macgrovemoves.com.macgrovemovesapp
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.view.View
 import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_homepage.*
@@ -11,6 +10,7 @@ import com.firebase.client.Firebase
 import com.firebase.client.DataSnapshot
 import com.firebase.client.ValueEventListener
 import com.firebase.client.FirebaseError
+import com.google.firebase.auth.FirebaseAuth
 
 class HomepageActivity : AppCompatActivity() {
 
@@ -20,6 +20,15 @@ class HomepageActivity : AppCompatActivity() {
 
         Firebase.setAndroidContext(this)
         val deviceID = Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID)
+        val user = FirebaseAuth.getInstance().currentUser
+        val uid = ""
+        if (user != null) {
+            val uid = user.uid
+            Toast.makeText(this, "uid " + uid, Toast.LENGTH_LONG).show()
+        } else{
+            Toast.makeText(this, "user is null", Toast.LENGTH_SHORT).show()
+        }
+        //TODO: Change input to uid
         val myFirebase = Firebase("https://macgrovemoves.firebaseio.com/Users/" + deviceID)
 
         // add trips buttons

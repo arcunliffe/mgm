@@ -17,6 +17,8 @@ class RegistrationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
+
+        Firebase.setAndroidContext(this)
         val myFirebaseAuth = FirebaseAuth.getInstance()
 
         val signUpButton = findViewById<Button>(R.id.r_sign_up_button)
@@ -53,8 +55,22 @@ class RegistrationActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task: Task<AuthResult> ->
                     if (task.isSuccessful) {
                         Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
+
+                        // Create a new entry in the database for the user
+                        val user = firebaseAuth.currentUser
+                        if (user != null) {
+                            val uid = user.uid
+                            val myFirebase = Firebase("https://macgrovemoves.firebaseio.com/Users/" + uid)
+                            myFirebase.child("walk").setValue("0")
+                            myFirebase.child("run").setValue("0")
+                            myFirebase.child("bike").setValue("0")
+                            myFirebase.child("transit").setValue("0")
+                        }
+
+                        // Go to homepage
                         val homeIntent = Intent(this, HomepageActivity::class.java)
                         startActivity(homeIntent)
+                        finish()
                     } else {
                         Toast.makeText(this, "Registration failed!", Toast.LENGTH_SHORT).show()
                     }
