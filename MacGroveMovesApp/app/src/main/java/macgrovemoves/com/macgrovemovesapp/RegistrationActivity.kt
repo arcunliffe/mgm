@@ -65,6 +65,9 @@ class RegistrationActivity : AppCompatActivity() {
                             myFirebase.child("run").setValue("0")
                             myFirebase.child("bike").setValue("0")
                             myFirebase.child("transit").setValue("0")
+                            myFirebase.child("15").setValue("false")
+                            myFirebase.child("30").setValue("false")
+                            myFirebase.child("45").setValue("false")
                         }
 
                         // Go to homepage

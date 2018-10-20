@@ -1,13 +1,14 @@
 package macgrovemoves.com.macgrovemovesapp
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 
 import kotlinx.android.synthetic.main.activity_homepage.*
 import com.firebase.client.Firebase
@@ -32,16 +33,16 @@ class HomepageActivity : AppCompatActivity() {
             val myFirebase = Firebase("https://macgrovemoves.firebaseio.com/Users/" + uid)
 
             // add trips buttons
-            p_walk.setOnClickListener { addTrips("walk", myFirebase) }
-            p_run.setOnClickListener { addTrips("run", myFirebase) }
-            p_bike.setOnClickListener { addTrips("bike", myFirebase) }
-            p_transit.setOnClickListener { addTrips("transit", myFirebase) }
+            p_walk.setOnClickListener { addTrips("walk", myFirebase, uid) }
+            p_run.setOnClickListener { addTrips("run", myFirebase, uid) }
+            p_bike.setOnClickListener { addTrips("bike", myFirebase, uid) }
+            p_transit.setOnClickListener { addTrips("transit", myFirebase, uid) }
 
             // subtract trips buttons
-            m_walk.setOnClickListener { subtractTrips("walk", myFirebase) }
-            m_run.setOnClickListener { subtractTrips("run", myFirebase) }
-            m_bike.setOnClickListener { subtractTrips("bike", myFirebase) }
-            m_transit.setOnClickListener { subtractTrips("transit", myFirebase) }
+            m_walk.setOnClickListener { subtractTrips("walk", myFirebase, uid) }
+            m_run.setOnClickListener { subtractTrips("run", myFirebase, uid) }
+            m_bike.setOnClickListener { subtractTrips("bike", myFirebase, uid) }
+            m_transit.setOnClickListener { subtractTrips("transit", myFirebase, uid) }
 
             // Update number of trips from server
             updateNTripsFromServer(myFirebase)
@@ -91,6 +92,7 @@ class HomepageActivity : AppCompatActivity() {
         return newTripsString
     }
 
+    /** Count total number of trips */
     private fun countTotalTrips(): Int{
         val totalTrips = parseTripText(text_walktrips.text.toString()) + parseTripText(text_runtrips.text.toString()) + parseTripText(text_transittrips.text.toString()) + parseTripText(text_biketrips.text.toString())
         return totalTrips
@@ -101,15 +103,15 @@ class HomepageActivity : AppCompatActivity() {
         val totalTrips = countTotalTrips()
         if (totalTrips < 15) {
             val remainingTrips = 15 - totalTrips
-            cum_trips.text = "Trips until next raffle entry: "  + remainingTrips.toString()
+            cum_trips.text = "Trips until next medal: "  + remainingTrips.toString()
         }
         else if (totalTrips < 30){
             val remainingTrips = 30 - totalTrips
-            cum_trips.text = "Trips until next raffle entry: "  + remainingTrips.toString()
+            cum_trips.text = "Trips until next medal: "  + remainingTrips.toString()
         }
         else if (totalTrips < 45) {
             val remainingTrips = 45 - totalTrips
-            cum_trips.text = "Trips until next raffle entry: "  + remainingTrips.toString()
+            cum_trips.text = "Trips until next medal: "  + remainingTrips.toString()
         }
         else {
             cum_trips.text = "Challenge completed. Congratulations!"
@@ -149,7 +151,51 @@ class HomepageActivity : AppCompatActivity() {
 
     }
 
-    /** Pop-up to submit raffle entry */
+    /** Submit to raffle if user is eligible */
+    private fun checkAndSubmit(uid: String){
+        // check number of trips
+        val numTrips = countTotalTrips()
+        val isEligible = numTrips == 15 || numTrips == 30 || numTrips == 45
+
+        if (isEligible){
+            // show dialog if entry hasn't already been submitted
+            val myFirebase = Firebase("https://macgrovemoves.firebaseio.com/Users/" + uid)
+            myFirebase.addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(dataSnapshot: DataSnapshot){
+                    val map = dataSnapshot.value
+                    if (map is Map<*, *>){
+                        val isAlreadySubmitted = map[numTrips.toString()].toString().toBoolean()
+                        if (! isAlreadySubmitted){
+                            showDialog(myFirebase, numTrips)
+                        }
+                    }
+                }
+                override fun onCancelled(firebaseError: FirebaseError){
+                    // do nothing
+                }
+            })
+        }
+    }
+
+    /** Dialog to submit raffle entry */
+    private fun showDialog(myFirebase: Firebase, numTrips: Int){
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("You have completed the necessary number of trips to submit an entry " +
+                           "to the MacGrove Moves raffle. If you win, we will contact you at the " +
+                           "email address associated with this account. Use the button below to " +
+                           "submit an entry.")
+                .setCancelable(false)
+                .setNeutralButton("Cancel", DialogInterface.OnClickListener{_,_->})
+                .setPositiveButton("Submit", DialogInterface.OnClickListener{_,_->
+                    // update value on server
+                    val activityKey = myFirebase.child(numTrips.toString())
+                    activityKey.setValue("true")
+                })
+
+        val alert: AlertDialog = builder.create()
+        alert.setTitle("Great job!")
+        alert.show()
+    }
 
     /** Get number of trips from server and update on app */
     private fun updateNTripsFromServer(myFirebase: Firebase){
@@ -178,7 +224,7 @@ class HomepageActivity : AppCompatActivity() {
     }
 
     /** Update app text to add trips */
-    private fun addTrips(activity_type: String, myFirebase: Firebase){
+    private fun addTrips(activity_type: String, myFirebase: Firebase, uid: String){
 
         var nTrips = -1
 
@@ -215,12 +261,13 @@ class HomepageActivity : AppCompatActivity() {
         if (nTrips != -1){
             val activityKey = myFirebase.child(activity_type)
             activityKey.setValue(nTrips.toString())
+            checkAndSubmit(uid)
             // Toast.makeText(this, "Updating trip count", Toast.LENGTH_SHORT).show()
         }
     }
 
     /**Update app text to subtract trips */
-    private fun subtractTrips(activity_type: String, myFirebase: Firebase){
+    private fun subtractTrips(activity_type: String, myFirebase: Firebase, uid: String){
         var updateServerVal = false
         var nTrips = -1
 
@@ -275,6 +322,7 @@ class HomepageActivity : AppCompatActivity() {
             // update value on server
             val activityKey = myFirebase.child(activity_type)
             activityKey.setValue(nTrips.toString())
+            checkAndSubmit(uid)
             // Toast.makeText(this, "Updating trip count", Toast.LENGTH_SHORT).show()
         }
     }
